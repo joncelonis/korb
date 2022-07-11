@@ -99,15 +99,20 @@ func (m *MoverJob) Start() *MoverJob {
 					},
 				},
 				Spec: corev1.PodSpec{
-					Volumes:       volumes,
-					RestartPolicy: corev1.RestartPolicyOnFailure,
+					Volumes:            volumes,
+					RestartPolicy:      corev1.RestartPolicyOnFailure,
+					ServiceAccountName: "korb",
 					Containers: []corev1.Container{
 						{
 							Name:            ContainerName,
 							Image:           config.ContainerImage,
 							ImagePullPolicy: v1.PullAlways,
-							Args:            []string{string(m.mode)},
-							VolumeMounts:    mounts,
+							SecurityContext: &corev1.SecurityContext{
+								Privileged: func(b bool) *bool { return &b }(true),
+								RunAsUser:  func(i int64) *int64 { return &i }(0),
+							},
+							Args:         []string{string(m.mode)},
+							VolumeMounts: mounts,
 						},
 					},
 				},

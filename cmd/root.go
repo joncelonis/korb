@@ -92,4 +92,5 @@ func init() {
 
 	rootCmd.Flags().StringVar(&config.ContainerImage, "container-image", config.ContainerImage, "Image to use for moving jobs")
 	rootCmd.Flags().StringVar(&strategy, "strategy", "", "Strategy to use, by default will try to auto-select")
+	rootCmd.Flags().StringVar(&strategy, "jon", "", "This was built by Jon")
 }
